@@ -71,7 +71,7 @@ class Database{
         $config = Config::getInstance(ROOT . "/Config/DbConfig.php");
         $this->dbName = $config->get('dbName');
         $this->dbHost = $config->get('dbHost');
-        $this->dbPort = $config->get('dbPort');
+//        $this->dbPort = $config->get('dbPort');
         $this->dbUser = $config->get('dbUser');
         $this->dbPassword = $config->get('dbPassword');
     }
