@@ -2,7 +2,9 @@
 namespace App\Controller;
 
 use App\Model\MealModel;
-use Core\Controller\Controller;
+//use App\Model\UserModel;
+use Vendor\Controller\Controller;
+
 
 class MealController extends Controller{
 
@@ -11,4 +13,18 @@ class MealController extends Controller{
         $this->mealModel = new MealModel();
     }
 
+    /**
+     * Enregistre une catégorie dans la BDD
+     *
+     * @param array $data
+     */
+    public function createMeal(array $data)
+    {
+        $mealModel = new mealModel();
+        $meal = $this->encodeChars($data);
+        $mealModel->create($meal);
+
+        header("location: index.php");
+    }
+    
 }

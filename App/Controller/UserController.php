@@ -1,9 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\Model\ArticleModel;
 use App\Model\UserModel;
-use Core\Controller\Controller;
+use Vendor\Controller\Controller;
 
 class UserController extends Controller{
 
@@ -14,26 +13,26 @@ class UserController extends Controller{
 
     public function signup($data)
     {
-        if (isset($data["email"])) {
+        if (isset($data["Email"])) {
             $user = $this->encodeChars($data);
-            $user["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
-            $user["role"] = json_encode(['user']);
+            $user["Password"] = password_hash($data["Password"], PASSWORD_DEFAULT);
+            $user["Role"] = json_encode(['user']);
             $this->userModel->create($user);
 
             header("Location:index.php?page=login");
         }
 
-        $this->render("auth.signup");
+        $this->render("user.signup");
 
     }
 
     public function login($data)
     {
-        if (isset($data["email"])) {
+        if (isset($data["Email"])) {
 
-            $user = $this->userModel->getUserByEmail($data["email"]);
+            $user = $this->userModel->getUserByEmail($data["Email"]);
 
-            if ($user && password_verify($data["password"], $user->password)) {
+            if ($user && password_verify($data["Password"], $user->password)) {
                 $_SESSION["user"] = $user;
                 $_SESSION["user"]->role = json_decode($user->role);
                 header("Location:index.php");
@@ -42,7 +41,7 @@ class UserController extends Controller{
             }
 
         }
-        $this->render("auth.login");
+        $this->render("user.login");
 
     }
 
@@ -52,38 +51,4 @@ class UserController extends Controller{
         header("Location:index.php");
     }
 
-    public function getUser()
-    {
-        $articleModel = new ArticleModel();
-        $user = $this->userModel->readOne($_GET["id"]);
-
-        $articles = $articleModel->userArticles($_GET["id"]);
-        foreach ($articles as $article ) {
-            $article->subContent = substr($article->content, 0, 30). " ...";
-        }
-
-        $this->render("user", [
-            "user" => $user,
-            "articles" => $articles
-        ]);
-    }
-
-    public function updateUser($data)
-    {
-        $data = $this->encodeChars($data);
-
-        if(empty($data["password"])){
-            $user = [];
-            foreach($data as $key=>$value){
-                if($key !== "password"){
-                    $user[$key] = $value;
-                }
-            }
-            $this->userModel->updateWithoutPassword($_GET["id"], $user);
-        } else {
-            $data["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
-
-            $this->userModel->updateWithPassword($_GET["id"], $data);
-        }
-    }
 }

@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Model\OrderlineModel;
-use Core\Controller\Controller;
+use Vendor\Controller\Controller;
 
 class OrderlineController extends Controller{
 

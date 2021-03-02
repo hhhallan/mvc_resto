@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-use Core\Model\Model;
+use Vendor\Model\Model;
 
 /**
  * @method ReadAll() | Récupère tous les utilisateurs
@@ -12,6 +12,13 @@ use Core\Model\Model;
 class UserModel extends Model{
 
     /**
+     * Nom de la table
+     *
+     * @var string
+     */
+    protected $table = "user";
+
+    /**
      * Récupère un utilisateur en fonction de son email
      *
      * @param string $email
@@ -19,7 +26,8 @@ class UserModel extends Model{
      */
     public function getUserByEmail(string $email):object
     {
-        $statement = "SELECT * FROM user WHERE email = '$email'";
+        $statement = "SELECT * FROM user WHERE Email = '$email'";
         return $this->db->getData($statement, true);
     }
+
 }

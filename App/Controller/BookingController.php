@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Model\BookingModel;
-use Core\Controller\Controller;
+use Vendor\Controller\Controller;
 
 class BookingController extends Controller{
 
