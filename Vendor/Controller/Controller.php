@@ -4,6 +4,8 @@ namespace Vendor\Controller;
 
 class Controller{
 
+  private $default = "default";
+
     /**
      * Display views with Database informations
      *

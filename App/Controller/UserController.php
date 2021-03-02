@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Model\ArticleModel;
 use App\Model\UserModel;
 use Core\Controller\Controller;
 
@@ -16,12 +17,13 @@ class UserController extends Controller{
         if (isset($data["email"])) {
             $user = $this->encodeChars($data);
             $user["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
+            $user["role"] = json_encode(['user']);
             $this->userModel->create($user);
 
             header("Location:index.php?page=login");
         }
 
-        $this->render("auth.signupView");
+        $this->render("auth.signup");
 
     }
 
@@ -33,13 +35,55 @@ class UserController extends Controller{
 
             if ($user && password_verify($data["password"], $user->password)) {
                 $_SESSION["user"] = $user;
+                $_SESSION["user"]->role = json_decode($user->role);
                 header("Location:index.php");
             } else {
                 $error = "Utilisateur ou mot de passe incorrect.";
             }
 
         }
-        $this->render("auth.loginView");
+        $this->render("auth.login");
 
+    }
+
+    public function logout()
+    {
+        session_destroy();
+        header("Location:index.php");
+    }
+
+    public function getUser()
+    {
+        $articleModel = new ArticleModel();
+        $user = $this->userModel->readOne($_GET["id"]);
+
+        $articles = $articleModel->userArticles($_GET["id"]);
+        foreach ($articles as $article ) {
+            $article->subContent = substr($article->content, 0, 30). " ...";
+        }
+
+        $this->render("user", [
+            "user" => $user,
+            "articles" => $articles
+        ]);
+    }
+
+    public function updateUser($data)
+    {
+        $data = $this->encodeChars($data);
+
+        if(empty($data["password"])){
+            $user = [];
+            foreach($data as $key=>$value){
+                if($key !== "password"){
+                    $user[$key] = $value;
+                }
+            }
+            $this->userModel->updateWithoutPassword($_GET["id"], $user);
+        } else {
+            $data["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
+
+            $this->userModel->updateWithPassword($_GET["id"], $data);
+        }
     }
 }
