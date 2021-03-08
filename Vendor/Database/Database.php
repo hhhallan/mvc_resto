@@ -21,13 +21,6 @@ class Database{
     private $dbHost;
 
     /**
-     * Database Port
-     *
-     * @var string
-     */
-    private $dbPort;
-
-    /**
      * Database User
      *
      * @var string
@@ -56,7 +49,7 @@ class Database{
         if(is_null($this->pdo)){
         
             $this->getConfig();
-            $this->pdo = new \PDO('mysql:host=' . $this->dbHost . ':' . $this->dbPort . 
+            $this->pdo = new \PDO('mysql:host=' . $this->dbHost .
                                 ';dbname=' . $this->dbName,
                                 $this->dbUser,
                                 $this->dbPassword);
@@ -71,7 +64,6 @@ class Database{
         $config = Config::getInstance(ROOT . "/Config/DbConfig.php");
         $this->dbName = $config->get('dbName');
         $this->dbHost = $config->get('dbHost');
-//        $this->dbPort = $config->get('dbPort');
         $this->dbUser = $config->get('dbUser');
         $this->dbPassword = $config->get('dbPassword');
     }

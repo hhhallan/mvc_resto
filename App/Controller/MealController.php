@@ -2,29 +2,17 @@
 namespace App\Controller;
 
 use App\Model\MealModel;
-//use App\Model\UserModel;
 use Vendor\Controller\Controller;
-
 
 class MealController extends Controller{
 
-    public function __construct()
+    public function home()
     {
-        $this->mealModel = new MealModel();
-    }
+        $mealModel = new MealModel();
+        $meals = $mealModel->findAll();
 
-    /**
-     * Enregistre une catégorie dans la BDD
-     *
-     * @param array $data
-     */
-    public function createMeal(array $data)
-    {
-        $mealModel = new mealModel();
-        $meal = $this->encodeChars($data);
-        $mealModel->create($meal);
-
-        header("location: index.php");
+        $this->render("home", [
+            "meals" => $meals
+        ]);
     }
-    
 }

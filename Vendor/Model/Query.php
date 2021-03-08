@@ -31,7 +31,7 @@ class Query extends Model
     {
         return $this->query('SELECT * FROM ' . $this->model . ' ' . 
                                 $this->createOrder($order),
-                                null,
+                                $this->classPath,
                                 false
                                 );                      
     }

@@ -1,35 +1,28 @@
 <?php
 
-
-use App\Controller\HomeController;
 use App\Controller\MealController;
 use App\Controller\UserController;
 
-if (!empty($_GET["page"])) {
+$page ="home";
+if (isset($_GET["page"])) {
     $page = $_GET["page"];
-} else {
-    $page = "home";
 }
 
 switch ($page) {
     case 'home':
-        $home = new HomeController();
-        $home->home();
+        $controller = new MealController();
+        $controller->home();
         break;
-    case 'listMeal':
-        $meal = new MealController();
-        $meal->listMeal($_GET["Id"]);
+    case 'signup':
+        $controller = new UserController();
+        $controller->signup();
         break;
-    // case 'meal':
-    //     $article = new ArticleController();
-    //     $article->listArticle($_GET["id"]);
-    //     break;
-    case "registration":
-        $user = new UserController();
-        $user->signup($_POST);
+    case 'login':
+        $controller = new UserController();
+        $controller->login();
         break;
-    case "login":
-        $user = new UserController();
-        $user->login($_POST);
+    case 'logout':
+        $controller = new UserController();
+        $controller->logout();
         break;
 }

@@ -4,22 +4,32 @@ namespace Vendor\Controller;
 
 class Controller{
 
-  private $default = "default";
+    private $default = "default";
 
     /**
-     * Display Viewss with Database informations
+     * Display views with Database informations
      *
-     * @param string $Views
+     * @param string $view
      * @param array $params
      */
-    public function render($Views, $params = []){
-      $pathViews = str_replace(".", "/", $Views);
+    public function render($view, $params = []){
+      $pathView = str_replace(".", "/", $view);
   
       ob_start();
       extract($params);
-      require ROOT . '/App/Views/' . $pathViews . '.php';
+      require ROOT . '/App/view/' . $pathView . '.php';
       $content = ob_get_clean();
-      require ROOT . '/App/Views/' . $this->default . '.php';
+      require ROOT . '/App/view/' . $this->default . '.php';
     }
-  
+
+    /**
+     * Renvoie vers une autre page du site
+     *
+     * @param string $route
+     */
+    public function redirectToRoute(string $route)
+    {
+      header("Location: $route");
+    }
+
   }

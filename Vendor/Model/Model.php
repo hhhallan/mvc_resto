@@ -34,6 +34,7 @@ class Model extends Database{
     public function __construct()
     {
         if(is_null($this->model)){
+
             $class = explode('\\', get_class($this));
             $className = end($class);
             $this->model = ucfirst(str_replace('Model', '', $className));
@@ -63,7 +64,7 @@ class Model extends Database{
      * @param array $order
      * @return string
      */
-    protected function createWhere ($andWhere)
+    protected function createWhere (array $andWhere):string
     {
         $whereList = ' WHERE ';
         foreach ($andWhere as $criteria => $value) {
